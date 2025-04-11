@@ -1,0 +1,288 @@
+/* <br>
+    Name: Pramod B Belagali <br>
+    USN: 1MS22CS104 <br>
+    Section: B <br>
+
+    What I learnt: <br>
+        => Scopes in JavaScript <br>
+        => global variables accessible throughout the program whereas local variables are not <br>
+        => Lexical Scope : Nested functions (like showDetails inside generateReport) have access to variables in their outer scope <br>
+        => var has function scope (accessible outside blocks like if/for) <br>
+        => let and const have block scope (only accessible within their blocks) <br>
+        => Hoisting of variable and function declarations <br>
+        => function declarations (like askQuestion1) are hoisted and can be called before they're defined whereas function expressions are not hoisted(askQuestion2) <br>
+*/
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .quiz-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .question {
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>JavaScript Quiz</h1>
+        <div id="quiz"></div>
+        <div id="result"></div>
+        <button id="review-score">Review Score</button>
+    </div>
+
+    <script>
+        // Global variable to track score
+        let score = 0;
+        
+        // Function declaration (hoisted)
+        function askQuestion1() {
+            // Local variable
+            const correctAnswer = "majorana";
+            
+            const userAnswer = prompt("Question 1: What is the name of the Quantum chip that Microsoft recently developed?");
+            if (userAnswer && userAnswer.toLowerCase()==correctAnswer) {
+                alert("Correct!");
+                score++;
+            } else {
+                alert(`Incorrect! The correct answer is "${correctAnswer}"`);
+            }
+            
+            // This variable is local to askQuestion1 and won't be accessible outside
+            const localScore = 10;
+        }
+        
+        // Function expression (not hoisted)
+        const askQuestion2 = function() {
+            const correctAnswer = "undefined";
+            
+            // Demonstrating hoisting - we're using the variable before declaration
+            console.log(hoistedVar); // gives undefined
+            var hoistedVar = "This variable is hoisted";
+            
+            const userAnswer = prompt("Question 2: What is the value of a var variable when accessed before declaration?");
+            if (userAnswer && userAnswer.toLowerCase() == correctAnswer) {
+                alert("Correct!");
+                score++;
+            } else {
+                alert(`Incorrect! The answer is "${correctAnswer}"`);
+            }
+        };
+        
+        // Arrow function (another type of function expression)
+        const askQuestion3 = () => {
+            const correctAnswer = "sora";
+            
+            const userAnswer = prompt("Question 3:  What is the name of OpenAI's text-to-video model?");
+            if (userAnswer && userAnswer.toLowerCase() == correctAnswer) {
+                alert("Correct!");
+                score++;
+            } else {
+                alert(`Incorrect! The answer is "${correctAnswer}" scope`);
+            }
+        };
+        
+        askQuestion1();
+        askQuestion2();
+        askQuestion3();
+        
+        document.getElementById('result').textContent = `Your final score is ${score}/3`;
+        
+        // Try to access localScore from askQuestion1
+        document.getElementById('review-score').addEventListener('click', function() {
+            try {
+                alert(`The local score is: ${localScore}`); // This will throw an error
+            } catch (e) {
+                alert(`Error: ${e.message}\nThis demonstrates that localScore is not accessible outside its function.`);
+            }
+        });
+    </script>
+</body>
+</html>
+
+<hr> <hr>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Activity Evaluator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .evaluator-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+    <div class="evaluator-container">
+        <h1>Student Activity Evaluator</h1>
+        
+        <div class="input-group">
+            <label for="studentName">Student Name:</label>
+            <input type="text" id="studentName" placeholder="Enter student name">
+        </div>
+        
+        <div class="input-group">
+            <label for="activityScores">Activity Scores (comma separated):</label>
+            <input type="text" id="activityScores" placeholder="e.g., 10, 20, 15, 5">
+        </div>
+        
+        <button id="evaluate">Evaluate</button>
+        
+        <div id="output"></div>
+    </div>
+
+    <script>
+        // Global variables
+        let studentName = "";
+        let activityScores = [];
+        
+        // Function declaration
+        function calculateTotal(scores) {
+            return scores.reduce((sum, score) => sum + score, 0);
+        }
+        
+        // Function expression
+        const evaluateRank = function(totalScore) {
+            if (totalScore > 40) return "Star Performer";
+            if (totalScore >= 30) return "Active";
+            return "Inactive";
+        };
+        
+        // Anonymous function stored in a variable
+        const calculateAverage = function(scores) {
+            return scores.length > 0 ? calculateTotal(scores) / scores.length : 0;
+        };
+        
+        // Function demonstrating lexical scope
+        function generateReport(name, rank) {
+            const message = "Great job on co-curriculars!";
+            
+            // Nested function that uses variables from outer function
+            function showDetails() {
+                return `Student: ${name}\nRank: ${rank}\nMessage: ${message}`;
+            }
+            
+            return showDetails();
+        }
+        
+        // Hoisting experiment
+        console.log("Hoisting test - category value:", category); // Will show undefined
+        var category = "Test Category";
+        
+        // Scope isolation test
+        if (true) {
+            var functionScopedVar = "I'm function scoped";
+        }
+        console.log("Accessing var outside block:", functionScopedVar); // Accessible
+        
+        document.getElementById('evaluate').addEventListener('click', function() {
+            // Get input values
+            studentName = document.getElementById('studentName').value;
+            const scoresInput = document.getElementById('activityScores').value;
+            
+            // Process scores
+            activityScores = scoresInput.split(',')
+                .map(score => parseFloat(score.trim()))
+                .filter(score => !isNaN(score));
+            
+            // Calculate metrics
+            const totalScore = calculateTotal(activityScores);
+            const averageScore = calculateAverage(activityScores);
+            const rank = evaluateRank(totalScore);
+            const report = generateReport(studentName, rank);
+            
+            // Display output
+            const output = `Student: ${studentName}
+            Activity Scores: [${activityScores.join(', ')}]
+            Total Score: ${totalScore}
+            Average Score: ${averageScore.toFixed(2)}
+            Rank: ${rank}
+            Report:
+            ${report}`;
+            
+            document.getElementById('output').textContent = output;
+        });
+    </script>
+</body>
+</html>
